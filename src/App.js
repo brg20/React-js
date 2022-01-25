@@ -2,7 +2,6 @@ import './App.css';
 import React, { useState, useEffect }  from "react";
 import NavBar from './components/NavBar.jsx';
 import ItemListContainer from './components/ItemListContainer.jsx';
-import { ItemsMock } from "./components/ItemsMock.jsx";
 
 
 function App() {
@@ -10,9 +9,17 @@ function App() {
   const [listItems, setListItems] = useState([]);
   
   useEffect(() => {
-    ItemsMock.getListItems()
-      .then((data) => setListItems(data))
-      .catch((err) => console.log(err));    
+    setTimeout(() => {
+        fetch('./Data.json',{
+          headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+           }
+        })
+        .then(response => response.json())
+        .then(respJSON => {console.log(respJSON.results); setListItems(respJSON.results)})
+        .catch((err) => console.log('Error: ',err))  
+      },2000)    
   }, [])
 
   return (
